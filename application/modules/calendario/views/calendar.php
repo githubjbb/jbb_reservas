@@ -16,8 +16,8 @@ $( document ).ready(function() {
     //alert('Por la seguridad de nuestros visitantes y la de quienes tenemos el gusto de atenderlos informamos que hoy, 12 de mayo de 2021: La atención al público será hasta las 12 M. Los invitamos a registrarse en otros horarios.');
     if(popup!=''){
     	Swal.fire({
-            title: 'Jornada Cultural Jardín de noche\nViernes 30 de junio de 2023',
-            html: '<div style="text-align:justify;">Por tu seguridad y para brindarte una experiencia grata a ti y tus acompañantes, el ingreso a esta actividad requiere preinscripción. Este registro es personal e intransferible. El sistema enviará a tu celular o correo electrónico un código QR de validación que te será exigido al momento del ingreso. El ingreso será UNICAMENTE presentando el código de preinscripción, sin excepción.<br><br>*Aplica para visitantes de 7 años en adelante<br><br>Horario:<br>Apertura de puertas: 4:30 p.m.<br>Cierre de ingreso a visitantes: 6:00 p.m.<br><br>Recuerda que esta actividad es abierta y gratuita.<br><br>RECOMENDACIONES<br>El Jardín Botánico se reserva el derecho de admisión ÚNICAMENTE a personas con preinscripción. Recuerda que no está permitido el ingreso de mascotas, bebidas alcohólicas, cigarrillos electrónicos o convencionales, ni de personas en estado de embriaguez o bajo el efecto de sustancias sicoactivas. Se aconseja portar ropa y calzado cómodos. Disponer de elementos de protección ante lluvias. Si las condiciones del clima suponen un riesgo para nuestros visitantes y personal, el Jardín Botánico podrá cancelar la jornada.<br><br>BIENVENIDOS!!<br><br>Gracias por atender nuestras recomendaciones.</div>',
+            title: 'Jornada Cultural <em>Jardín de Noche</em>\n<font color="blue">Viernes 28 de Julio de 2023</font>',
+            html: '<div style="text-align:justify;">Por tu seguridad y para brindarte una experiencia grata a ti y tus acompañantes, el ingreso a esta actividad requiere preinscripción. <strong>PARA SU INGRESO DEBE PRESENTAR SU DOCUMENTO DE IDENTIDAD.</strong><br><br><strong>*Aplica para visitantes de 7 años en adelante</strong><br><br>Este registro es personal e intransferible. El sistema enviará a tu celular o correo electrónico un código QR de validación que te será exigido al momento del ingreso. El ingreso será <strong>UNICAMENTE</strong> presentando el código de preinscripción, sin excepción.<br><br><strong>Horario de Ingreso:<br>Apertura de Puertas: 4:30 p.m.<br>Cierre de Ingreso a Visitantes: 6:00 p.m.<br><br>Recuerda que esta actividad es gratuita.</strong><br><br>RECOMENDACIONES:<br><br><ul><li>El Jardín Botánico se reserva el derecho de admisión ÚNICAMENTE a personas con preinscripción.</li><li>Recuerda que no está permitido el ingreso de mascotas, bebidas alcohólicas, cigarrillos electrónicos o convencionales, ni de personas en estado de embriaguez o bajo el efecto de sustancias sicoactivas.</li><li>Se aconseja portar ropa y calzado cómodos. Disponer de elementos de protección ante lluvias. Si las condiciones del clima suponen un riesgo para nuestros visitantes y personal, el Jardín Botánico podrá cancelar la jornada.</li></ul></div>',
             icon: 'success',
             confirmButtonText: 'Aceptar',
             width: '400px'
@@ -156,7 +156,7 @@ $(function(){
                 <div class="panel-body">
                 	<div class="row">
                 		<div class="col-lg-6">
-                			<h6 class="lead"><b>Jornada Cultural Jardín de noche<br>Viernes 30 de junio de 2023<br>Apertura de puertas: 4:30 pm - Cierre de ingreso a visitantes: 6:00 pm</b></h6>
+                			<h6 class="lead"><b>Jornada Cultural <em>Jardín de Noche</em><br><font color="blue">Viernes 28 de Julio de 2023</font></b></h6>
                 		</div>
                 		<div class="col-lg-6">	
                 			<p class="text-right text-danger">
@@ -174,9 +174,7 @@ $(function(){
             			</div>
                 	</div>
                 	<small>
-                	
-                    <p>Registre su visita en dos simples pasos:</p>
-
+                    <!--<p>Registre su visita en dos simples pasos:</p>
 				    <ol>
 				    <li> 
 				    	<strong>Seleccione la fecha y hora: </strong>
@@ -187,8 +185,7 @@ $(function(){
 				    	Registre los Nombres de cada uno de los asistentes (máximo 4 personas, incluyendo niños mayores de 3 años), un número celular de contacto y el correo electrónico donde recibirá el código QR de verificación. No olvide llenar el campo de comprobación (captcha) que consiste en escribir la palabra que está en colores, en el campo dispuesto para ello.
 					</li>
 					</ol>
-
-					<!--<ul>
+					<ul>
 						<li>
 						Si después de tu visita al Jardín Botánico te diagnostican con Covid-19 debes reportarlo de inmediato a las autoridades de salud y al teléfono 4377060. Por tu salud y la de todos, Bogotá se sabe mover.Si después de tu visita al Jardín Botánico te diagnostican con Covid-19 debes reportarlo de inmediato a las autoridades de salud y al teléfono 4377060. Por tu salud y la de todos, Bogotá se sabe mover.
 						</li>
@@ -200,12 +197,24 @@ $(function(){
 						Finalmente, se recuerda que todos los recorridos guiados están sujetos a cancelación si las condiciones climáticas o de seguridad así lo determinan, con el fin de evitar riesgos y aglomeraciones. Gracias por su comprensión.
 						</li>
 					</ul>-->
-
-					<p>Tenga en cuenta lo siguiente:</p>
+					Por tu seguridad y para brindarte una experiencia grata a ti y tus acompañantes, el ingreso a esta actividad requiere preinscripción. <strong>PARA SU INGRESO DEBE PRESENTAR SU DOCUMENTO DE IDENTIDAD.</strong>
+					<br><br>
+					<strong>*Aplica para visitantes de 7 años en adelante</strong>
+					<br><br>
+					Este registro es personal e intransferible. El sistema enviará a tu celular o correo electrónico un código QR de validación que te será exigido al momento del ingreso. El ingreso será <strong>UNICAMENTE</strong> presentando el código de preinscripción, sin excepción.
+					<br><br>
+					<strong>Horario de Ingreso:<br>
+					Apertura de Puertas: 4:30 p.m.<br>
+					Cierre de Ingreso a Visitantes: 6:00 p.m.
+					<br><br>
+					Recuerda que esta actividad es gratuita.</strong>
+					<br><br>
+					RECOMENDACIONES:
+					<br><br>
 					<ul>
-						El ingreso será UNICAMENTE presentando el código de preinscripción, sin excepción. El sistema enviará a tu celular o correo electrónico un código QR de validación que te será exigido al momento del ingreso.
-						<br><br>
-						BIENVENIDOS!!
+						<li>El Jardín Botánico se reserva el derecho de admisión ÚNICAMENTE a personas con preinscripción.</li>
+						<li>Recuerda que no está permitido el ingreso de mascotas, bebidas alcohólicas, cigarrillos electrónicos o convencionales, ni de personas en estado de embriaguez o bajo el efecto de sustancias sicoactivas.</li>
+						<li>Se aconseja portar ropa y calzado cómodos. Disponer de elementos de protección ante lluvias. Si las condiciones del clima suponen un riesgo para nuestros visitantes y personal, el Jardín Botánico podrá cancelar la jornada.</li>
 					</ul>
 					</small>
                 </div>
