@@ -2,8 +2,8 @@
 			
 			$( "#form" ).validate( {
 				rules: {
-					inputLogin: 			{ required: true, minlength: 4, maxlength:15 },
-					inputPassword: 			{ required: true, minlength: 6, maxlength:15 }
+					inputLogin: 			{ required: true, minlength: 4, maxlength:20 },
+					inputPassword: 			{ required: true, minlength: 6, maxlength:20 }
 				},
 				errorElement: "em",
 				errorPlacement: function ( error, element ) {

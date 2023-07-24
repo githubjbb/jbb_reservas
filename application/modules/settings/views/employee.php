@@ -101,7 +101,7 @@ $(function(){
 								
 								<?php if(!$deshabilitar){ ?>
 								<th class="text-center">Editar</th>
-								<th class="text-center">Contraseña</th>
+								<!--<th class="text-center">Contraseña</th>-->
 								<?php } ?>
 								
 								<th class="text-center">Correo</th>
@@ -164,16 +164,15 @@ if($count == 10){
 									</button>
 						<?php
 									echo "</td>";
-									echo "<td class='text-center'>";
+									//echo "<td class='text-center'>";
 							?>
 									<!-- 
 										Se quita la opcion de resetear la contraseña a 123456
-									<a href="<?php echo base_url("admin/resetPassword/" . $lista['id_user']); ?>" class="btn btn-default btn-xs">Reset <span class="glyphicon glyphicon-lock" aria-hidden="true"></a> 
-									-->
-									<a href="<?php echo base_url("settings/change_password/" . $lista['id_user']); ?>" class="btn btn-default btn-xs">Cambiar Contraseña <span class="glyphicon glyphicon-lock" aria-hidden="true"></a>
+									<a href="<?php echo base_url("admin/resetPassword/" . $lista['id_user']); ?>" class="btn btn-default btn-xs">Reset <span class="glyphicon glyphicon-lock" aria-hidden="true"></a>
+									<a href="<?php echo base_url("settings/change_password/" . $lista['id_user']); ?>" class="btn btn-default btn-xs">Cambiar Contraseña <span class="glyphicon glyphicon-lock" aria-hidden="true"></a>-->
 									
 							<?php
-									echo "</td>";
+									//echo "</td>";
 									}
 									
 									echo "<td>" . $lista['email'] . "</td>";
