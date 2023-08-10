@@ -42,7 +42,7 @@
 
 				//revisar si es para adicionar o editar
 				if ($idUser == '') {
-					$data['state'] = 0;//si es para adicionar se coloca estado inicial como usuario nuevo
+					$data['state'] = 1;
 					$data['password'] = 'e10adc3949ba59abbe56e057f20f883e';//123456
 					$query = $this->db->insert('usuarios', $data);
 				} else {

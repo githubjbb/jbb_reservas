@@ -67,20 +67,16 @@ class Settings extends CI_Controller {
 	{			
 			header('Content-Type: application/json');
 			$data = array();
-			
 			$idUser = $this->input->post('hddId');
-
 			$msj = "Se adicionó un nuevo Usuario!";
 			if ($idUser != '') {
 				$msj = "Se actualizó el Usuario!";
-			}			
-
+			}
 			$log_user = $this->input->post('user');
 			$email_user = $this->input->post('email');
-			
 			$result_user = false;
 			$result_email = false;
-			
+			$result_ldap = false;
 			//verificar si ya existe el usuario
 			$arrParam = array(
 				"idUser" => $idUser,
@@ -88,7 +84,6 @@ class Settings extends CI_Controller {
 				"value" => $log_user
 			);
 			$result_user = $this->settings_model->verifyUser($arrParam);
-			
 			//verificar si ya existe el correo
 			$arrParam = array(
 				"idUser" => $idUser,
@@ -96,13 +91,42 @@ class Settings extends CI_Controller {
 				"value" => $email_user
 			);
 			$result_email = $this->settings_model->verifyUser($arrParam);
-
 			$data["state"] = $this->input->post('state');
 			if ($idUser == '') {
 				$data["state"] = 1;//para el direccionamiento del JS, cuando es usuario nuevo no se envia state
+
+				$ldapuser = $this->session->userdata('logUser');
+				$ldappass = ldap_escape($this->session->userdata('password'), null, LDAP_ESCAPE_FILTER);
+				$ds = ldap_connect("192.168.0.44", "389") or die("No es posible conectar con el directorio activo.");  // Servidor LDAP!
+		        if (!$ds) {
+		            echo "<br /><h4>Servidor LDAP no disponible</h4>";
+		            @ldap_close($ds);
+		        } else {
+		            $ldapdominio = "jardin";
+		            $ldapusercn = $ldapdominio . "\\" . $ldapuser;
+		            $binddn = "dc=jardin, dc=local";
+		            ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+            		ldap_set_option($ds, LDAP_OPT_REFERRALS, 0);
+		            $r = @ldap_bind($ds, $ldapusercn, $ldappass);
+		            if (!$r) {
+		                @ldap_close($ds);
+		                $data["msj"] = "Error de autenticación. Por favor revisar usuario y contraseña de red.";
+		                $this->session->sess_destroy();
+						$this->load->view('login', $data);
+		            } else {
+		            	$filter = "(&(sAMAccountName=" . $log_user . ")(mail=" . $email_user . "))";
+		            	$attributes = array('sAMAccountName', 'mail');
+		            	$result = @ldap_search($ds, $binddn, $filter, $attributes);
+		            	if (@ldap_count_entries($ds, $result) == 1) {
+		            		$result_ldap = false;
+		            	} else {
+		            		$result_ldap = true;
+		            	}
+		            }
+		        }
 			}
 
-			if ($result_user || $result_email)
+			if ($result_user || $result_email || $result_ldap)
 			{
 				$data["result"] = "error";
 				if($result_user)
@@ -120,6 +144,12 @@ class Settings extends CI_Controller {
 					$data["mensaje"] = " Error. El Usuario y el Correo ya existen.";
 					$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> El Usuario y el Correo ya existen.');
 				}
+
+				if ($result_ldap) {
+					$data["mensaje"] = " Error. El usuario no existe en el directorio activo.";
+					$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> El usuario no esta creado en el directorio activo.');
+				}
+				
 			} else {
 					if ($this->settings_model->saveEmployee()) {
 						$data["result"] = true;					
@@ -129,7 +159,6 @@ class Settings extends CI_Controller {
 						$this->session->set_flashdata('retornoError', '<strong>Error!</strong> Ask for help');
 					}
 			}
-
 			echo json_encode($data);
     }
 	
