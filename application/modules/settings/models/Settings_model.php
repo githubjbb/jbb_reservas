@@ -2,7 +2,6 @@
 
 	class Settings_model extends CI_Model {
 
-	    
 		/**
 		 * Verify if the user already exist by the social insurance number
 		 * @author BMOTTAG
@@ -13,11 +12,9 @@
 		{
 				if (array_key_exists("idUser", $arrData)) {
 					$this->db->where('id_user !=', $arrData["idUser"]);
-				}			
-
+				}
 				$this->db->where($arrData["column"], $arrData["value"]);
 				$query = $this->db->get("usuarios");
-
 				if ($query->num_rows() >= 1) {
 					return true;
 				} else{ return false; }
@@ -30,7 +27,6 @@
 		public function saveEmployee() 
 		{
 				$idUser = $this->input->post('hddId');
-				
 				$data = array(
 					'first_name' => $this->input->post('firstName'),
 					'last_name' => $this->input->post('lastName'),
@@ -38,8 +34,7 @@
 					'movil' => $this->input->post('movilNumber'),
 					'email' => $this->input->post('email'),
 					'fk_id_user_role' => $this->input->post('id_role')
-				);	
-
+				);
 				//revisar si es para adicionar o editar
 				if ($idUser == '') {
 					$data['state'] = 1;
@@ -66,15 +61,12 @@
 		{
 				$passwd = '123456';
 				$passwd = md5($passwd);
-				
 				$data = array(
 					'password' => $passwd,
 					'state' => 0
 				);
-
 				$this->db->where('id_user', $idUser);
 				$query = $this->db->update('usuarios', $data);
-
 				if ($query) {
 					return true;
 				} else {
@@ -93,14 +85,11 @@
 				$newPassword = $this->input->post("inputPassword");
 				$passwd = str_replace(array("<",">","[","]","*","^","-","'","="),"",$newPassword); 
 				$passwd = md5($passwd);
-				
 				$data = array(
 					'password' => $passwd
 				);
-
 				$this->db->where('id_user', $idUser);
 				$query = $this->db->update('usuarios', $data);
-
 				if ($query) {
 					return true;
 				} else {
@@ -119,12 +108,12 @@
 				$fechaFin = $this->input->post('finish_date');
 				$horaInicio = $this->input->post('start_hour');
 				$horaFin = $this->input->post('finish_hour');
-
+				$minInicio = $this->input->post('start_minutes');
+				$minFin = $this->input->post('finish_minutes');
 				$date1 = new DateTime($fechaInicio);
 				$date2 = new DateTime($fechaFin);
 				$diff = $date1->diff($date2);
 				$numeroDias = $diff->days + 1;
-
 				switch ($intervalo) {
 					case 1:
 						//cada 15 min
@@ -143,27 +132,22 @@
 						break;
 					case 4:
 						//ninguno
-						$incremento = '+120 minute';
+						$incremento = '+90 minute';
 						$numeroHorariosDia = 0;
 						break;
 				}
-
 				$numeroHorariosDia++;
-
-				$fechaInicial = $fechaInicio . ' ' . $horaInicio . ':00:00';
-				
+				$fechaInicial = $fechaInicio . ' ' . $horaInicio . ':' . $minInicio . ':00';
 				for ($i = 0; $i < $numeroDias; $i++) 
 				{
 					$date = new DateTime($fechaInicial);
 					$date->modify('+' . $i . ' day');
 					$horarioInicio = $date->format('Y-m-d H:i:s');
-
 					for ($y = 0; $y < $numeroHorariosDia; $y++)
 					{
 						$date = new DateTime($horarioInicio);
 						$date->modify($incremento);
 						$horaFinal = $date->format('Y-m-d H:i:s');
-
 						$data = array(
 							'hora_inicial' => $horarioInicio,
 							'hora_final' => $horaFinal,
@@ -174,13 +158,9 @@
 							'tipo_visita' => $this->input->post('tipoVisita')
 						);
 						$query = $this->db->insert('horarios', $data);
-
 						$horarioInicio = $horaFinal;
 					}
-
 				}
-			
-
 				if ($query) {
 					return true;
 				} else {
@@ -188,7 +168,7 @@
 				}
 		}	    
 		
-		/**icionar cupos/Edit Horario
+		/**adicionar cupos/Edit Horario
 		 * @since 31/10/2021
 		 */
 		public function saveMasCupos()
@@ -197,20 +177,16 @@
 				$cuposActuales = $this->input->post('hddCuposActuales');
 				$cuposDisponibles = $this->input->post('hddCuposDisponibles');
 				$cuposAdicionales = $this->input->post('numeroCupos');
-
 				$nuevosCupos = $cuposActuales + $cuposAdicionales;
 				$nuevosCuposDisponibles = $cuposDisponibles + $cuposAdicionales;
-				
 				$data = array(
 					'numero_cupos' => $nuevosCupos,
 					'numero_cupos_restantes' => $nuevosCuposDisponibles,
 					'estado' => 1,
 					'disponible' => 1
-				);	
-
+				);
 				$this->db->where('id_horario', $idHorario);
 				$query = $this->db->update('horarios', $data);
-
 				if ($query) {
 					return true;
 				} else {
@@ -228,8 +204,6 @@
 			$data['disponible'] = 1;
 			$this->db->where('disponible', 3);
 			$query = $this->db->update('horarios', $data);
-			
-
 			//update states
 			$query = 1;
 			if ($disponibilidad = $this->input->post('disponibilidad')) {
@@ -246,8 +220,4 @@
 				return false;
 			}
 		}
-		
-		
-		
-	    
 	}

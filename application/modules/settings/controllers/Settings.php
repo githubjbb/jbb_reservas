@@ -18,15 +18,12 @@ class Settings extends CI_Controller {
 	public function employee($state)
 	{			
 			$data['state'] = $state;
-			
 			if($state == 1){
 				$arrParam = array("filtroState" => TRUE);
 			}else{
 				$arrParam = array("state" => $state);
 			}
-			
 			$data['info'] = $this->general_model->get_user($arrParam);
-			
 			$data["view"] = 'employee';
 			$this->load->view("layout_calendar", $data);
 	}
@@ -38,13 +35,10 @@ class Settings extends CI_Controller {
     public function cargarModalEmployee() 
 	{
 			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
-			
 			$data['information'] = FALSE;
-			$data["idEmployee"] = $this->input->post("idEmployee");	
-			
+			$data["idEmployee"] = $this->input->post("idEmployee");
 			$arrParam = array("filtro" => TRUE);
 			$data['roles'] = $this->general_model->get_roles($arrParam);
-
 			if ($data["idEmployee"] != 'x') {
 				$arrParam = array(
 					"table" => "usuarios",
@@ -54,7 +48,6 @@ class Settings extends CI_Controller {
 				);
 				$data['information'] = $this->general_model->get_basic_search($arrParam);
 			}
-			
 			$this->load->view("employee_modal", $data);
     }
 	
@@ -94,7 +87,6 @@ class Settings extends CI_Controller {
 			$data["state"] = $this->input->post('state');
 			if ($idUser == '') {
 				$data["state"] = 1;//para el direccionamiento del JS, cuando es usuario nuevo no se envia state
-
 				$ldapuser = $this->session->userdata('logUser');
 				$ldappass = ldap_escape($this->session->userdata('password'), null, LDAP_ESCAPE_FILTER);
 				$ds = ldap_connect("192.168.0.44", "389") or die("No es posible conectar con el directorio activo.");  // Servidor LDAP!
@@ -125,7 +117,6 @@ class Settings extends CI_Controller {
 		            }
 		        }
 			}
-
 			if ($result_user || $result_email || $result_ldap)
 			{
 				$data["result"] = "error";
@@ -144,12 +135,10 @@ class Settings extends CI_Controller {
 					$data["mensaje"] = " Error. El Usuario y el Correo ya existen.";
 					$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> El Usuario y el Correo ya existen.');
 				}
-
 				if ($result_ldap) {
 					$data["mensaje"] = " Error. El usuario no existe en el directorio activo.";
 					$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> El usuario no esta creado en el directorio activo.');
 				}
-				
 			} else {
 					if ($this->settings_model->saveEmployee()) {
 						$data["result"] = true;					
@@ -176,7 +165,6 @@ class Settings extends CI_Controller {
 			} else {
 				$this->session->set_flashdata('retornoError', '<strong>Error!</strong> Ask for help');
 			}
-			
 			redirect("/settings/employee/",'refresh');
 	}	
 
@@ -190,7 +178,6 @@ class Settings extends CI_Controller {
 			if (empty($idUser)) {
 				show_error('ERROR!!! - You are in the wrong place. The ID USER is missing.');
 			}
-			
 			$arrParam = array(
 				"table" => "usuarios",
 				"order" => "id_user",
@@ -198,7 +185,6 @@ class Settings extends CI_Controller {
 				"id" => $idUser
 			);
 			$data['information'] = $this->general_model->get_basic_search($arrParam);
-		
 			$data["view"] = "form_password";
 			$this->load->view("layout", $data);
 	}
@@ -209,21 +195,16 @@ class Settings extends CI_Controller {
 	public function update_password()
 	{
 			$data = array();			
-			
 			$newPassword = $this->input->post("inputPassword");
 			$confirm = $this->input->post("inputConfirm");
 			$userState = $this->input->post("hddState");
-			
 			//Para redireccionar el usuario
 			if($userState!=2){
 				$userState = 1;
 			}
-			
-			$passwd = str_replace(array("<",">","[","]","*","^","-","'","="),"",$newPassword); 
-			
+			$passwd = str_replace(array("<",">","[","]","*","^","-","'","="),"",$newPassword);
 			$data['linkBack'] = "settings/employee/" . $userState;
 			$data['titulo'] = "<i class='fa fa-unlock fa-fw'></i>CAMBIAR CONTRASEÑA";
-			
 			if($newPassword == $confirm)
 			{					
 					if ($this->settings_model->updatePassword()) {
@@ -236,11 +217,10 @@ class Settings extends CI_Controller {
 						$data['msj'] = '<strong>Error!!!</strong> Ask for help.';
 						$data['clase'] = 'alert-danger';
 					}
-			}else{
+			} else {
 				//definir mensaje de error
 				echo "pailas no son iguales";
 			}
-						
 			$data["view"] = "template/answer";
 			$this->load->view("layout", $data);
 	}
@@ -257,29 +237,23 @@ class Settings extends CI_Controller {
 			foreach($files as $file){
 			    $lastModifiedTime = filemtime($file);
 			    $currentTime = time();
-			    
 			    $timeDiff = abs($currentTime - $lastModifiedTime)/(60*60*24); //en dias
-
 			    if(is_file($file) && $timeDiff > 15){
 			    	unlink($file); //elimino el fichero
 			    }
 			}
-
 			//eliminar imagenes de captcha
 			$files = glob('images/captcha_images/*.jpg'); //obtenemos todos los nombres de los ficheros
-
 			foreach($files as $file){
 			    if(is_file($file))
 			    unlink($file); //elimino el fichero
 			}
-
 			$arrParam = array(
 				'from' => date('Y-m-d'),
 				'tipoVisita' => $tipoVisita
 			);
 			$data['infoHorarios'] = $this->general_model->get_horario_info($arrParam);
 			$data['tipoVisita'] = $tipoVisita;
-			
 			$data["view"] = 'horarios';
 			$this->load->view("layout_calendar", $data);
 	}
@@ -291,7 +265,6 @@ class Settings extends CI_Controller {
     public function cargarModalHorarios() 
 	{
 			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
-
 			$data["tipoVisita"] = $this->input->post("tipoVisita");	
 			$data['information'] = FALSE;
 			$this->load->view("horarios_modal", $data);
@@ -306,14 +279,12 @@ class Settings extends CI_Controller {
 	{			
 			header('Content-Type: application/json');
 			$data = array();
-		
 			$idHorario = $this->input->post('hddId');
 			$data["tipoVisita"] = $this->input->post('tipoVisita');
 			$msj = "Se adicionaron los horarios!";
 			if ($idHorario != '') {
 				$msj = "Se actualizó el Proveedor!";
 			}
-
 			if ($idHorario = $this->settings_model->saveHorarios()) {
 				$data["result"] = true;
 				$this->session->set_flashdata('retornoExito', '<strong>Correcto!</strong> ' . $msj);
@@ -321,7 +292,6 @@ class Settings extends CI_Controller {
 				$data["result"] = "error";
 				$this->session->set_flashdata('retornoError', '<strong>Error!</strong> Ask for help');
 			}
-
 			echo json_encode($data);	
     }
 
@@ -332,17 +302,14 @@ class Settings extends CI_Controller {
     public function cargarModalAddCupos() 
 	{
 			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
-			
 			$data['information'] = FALSE;
-			$data["idHorario"] = $this->input->post("idHorario");	
-			
+			$data["idHorario"] = $this->input->post("idHorario");
 			if ($data["idHorario"] != 'x') {
 				$arrParam = array(
 					"idHorario" => $data["idHorario"]
 				);
 				$data['information'] = $this->general_model->get_horario_info($arrParam);
 			}
-			
 			$this->load->view("horarios_cupos_modal", $data);
     }
 
@@ -380,63 +347,102 @@ class Settings extends CI_Controller {
 				$data["result"] = "error";
 				$this->session->set_flashdata('retornoError', '<strong>Error!!!</strong> Ask for help');
 			}
-
 			redirect(base_url('settings/horarios/'. $tipoVisita), 'refresh');
 	}
 
 	/**
-	 * Mensaje emergente
-     * @since 19/5/2021
-     * @author BMOTTAG
+	 * titulo
+     * @since 15/08/2023
+     * @author AOCUBILLOSA
 	 */
-	public function popup()
+	public function titulo()
 	{
-			//busco en la tabla parametros el valor para el popup
+			//busco en la tabla parametros el valor para el titulo
 			$arrParam = array(
 				'table' => 'parametros',
 				'order' => 'id_parametro',
 				'column' => 'parametro_nombre',
-				'id' => 'popup'
+				'id' => 'titulo'
 			);
-			$data['infoPopup'] = $this->general_model->get_basic_search($arrParam);
-
-			$data["view"] = 'popup';
+			$data['info'] = $this->general_model->get_basic_search($arrParam);
+			$data["view"] = 'titulo';
 			$this->load->view('layout_calendar', $data);
 	}
 	
 	/**
-	 * Save horarios
-     * @since 16/2/2021
-     * @author BMOTTAG
+	 * Save titulo
+     * @since 15/08/2023
+     * @author AOCUBILLOSA
 	 */
-	public function save_popup()
+	public function save_titulo()
 	{			
-			$data['linkBack'] = "settings/popup";
-			$data['titulo'] = "<i class='fa fa-thumb-tack'></i> POP-UP";
-
-			$texto =  $this->security->xss_clean($this->input->post('texto'));
-			$texto =  addslashes($texto);
-					
-			//actualizamos el campo popup
+			$data['linkBack'] = "settings/titulo";
+			$data['titulo'] = "<i class='fa fa-thumb-tack'></i> TITULO";
+			$texto =  $this->input->post('texto');
+			//actualizamos el campo titulo
 			$arrParam = array(
 				'table' => 'parametros',
 				'primaryKey' => 'parametro_nombre',
-				'id' => 'popup',
+				'id' => 'titulo',
 				'column' => 'parametro_valor',
 				'value' => $texto
 			);
 			if($this->general_model->updateRecord($arrParam)){
-				$data['msj'] = 'Se actualizó el campo de Pop-Up.';
+				$data['msj'] = 'Se actualizó el campo de titulo.';
 				$data['clase'] = 'alert-success';
 			}else{
 				$data['msj'] = '<strong>Error!!!</strong> Ask for help.';
 				$data['clase'] = 'alert-danger';
 			}
-						
 			$data["view"] = "template/answer";
 			$this->load->view("layout", $data);
     }
 	
-
+    /**
+	 * mensaje
+     * @since 15/08/2023
+     * @author AOCUBILLOSA
+	 */
+	public function mensaje()
+	{
+			//busco en la tabla parametros el valor para el mensaje
+			$arrParam = array(
+				'table' => 'parametros',
+				'order' => 'id_parametro',
+				'column' => 'parametro_nombre',
+				'id' => 'mensaje'
+			);
+			$data['infoMsj'] = $this->general_model->get_basic_search($arrParam);
+			$data["view"] = 'mensaje';
+			$this->load->view('layout_calendar', $data);
+	}
 	
+	/**
+	 * Save mensaje
+     * @since 15/08/2023
+     * @author AOCUBILLOSA
+	 */
+	public function save_mensaje()
+	{			
+			$data['linkBack'] = "settings/mensaje";
+			$data['titulo'] = "<i class='fa fa-thumb-tack'></i> MENSAJE";
+			$texto =  $this->input->post('texto');
+			//actualizamos el campo mensaje
+			$arrParam = array(
+				'table' => 'parametros',
+				'primaryKey' => 'parametro_nombre',
+				'id' => 'mensaje',
+				'column' => 'parametro_valor',
+				'value' => $texto
+			);
+			if($this->general_model->updateRecord($arrParam)){
+				$data['msj'] = 'Se actualizó el campo de mensaje.';
+				$data['clase'] = 'alert-success';
+			}else{
+				$data['msj'] = '<strong>Error!!!</strong> Ask for help.';
+				$data['clase'] = 'alert-danger';
+			}
+			$data["view"] = "template/answer";
+			$this->load->view("layout", $data);
+    }
 }

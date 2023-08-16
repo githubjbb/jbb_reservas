@@ -23,10 +23,17 @@ class Calendario extends CI_Controller {
 				'table' => 'parametros',
 				'order' => 'id_parametro',
 				'column' => 'parametro_nombre',
-				'id' => 'popup'
+				'id' => 'titulo'
 			);
-			$data['infoPopup'] = $this->general_model->get_basic_search($arrParam);
-
+			$data['info'] = $this->general_model->get_basic_search($arrParam);
+			$arrParam = array(
+				'table' => 'parametros',
+				'order' => 'id_parametro',
+				'column' => 'parametro_nombre',
+				'id' => 'mensaje'
+			);
+			$data['infoMsj'] = $this->general_model->get_basic_search($arrParam);
+			$data['idHorario'] = $this->calendario_model->get_horarioDisponible();
 			$data["view"] = 'calendar';
 			$this->load->view("layout_calendar", $data);
 	}
@@ -132,11 +139,8 @@ class Calendario extends CI_Controller {
     public function cargarModalReserva() 
 	{
 			header("Content-Type: text/plain; charset=utf-8"); //Para evitar problemas de acentos
-
 			$flores = array('orquidea', 'cayena', 'heliconia', 'tulipan', 'brunellia', 'abarema', 'aniba', 'calatola', 'centronia', 'clusia', 'cordia', 'espeletia', 'guarea', 'herrania', 'licania', 'magnolia');
-
 			$i = rand(0, 14);
-
 			// Captcha
 			$config = array(
 				'word'		=> $flores[$i],
@@ -145,52 +149,39 @@ class Calendario extends CI_Controller {
 			    'img_url'       => base_url().'images/captcha_images/'
 			);
 			$captcha = create_captcha($config);
-
 			// Unset previous captcha and store new captcha word
 			$this->session->unset_userdata('captchaCode');
 			$this->session->set_userdata('captchaCode',$captcha['word']);
-
 			// Send captcha image to view
 			$data['captchaImg'] = $captcha['image'];
-			
 			$data['information'] = FALSE;
 			$data["idHorario"] = $this->input->post("idHorario");
-
 			$arrParam = array(
 				"idHorario" => $data["idHorario"]
 			);
 			$data['information'] = $this->general_model->get_horario_info($arrParam);
-
 			$fechaActual = strtotime(date('Y-m-d G:i:s'));
-			$fechaFinal = strtotime($data['information'][0]['hora_final']);
-
-			/*var_dump($fechaInicial);
-			var_dump($fechaActual); exit();*/
-					
+			$fechaFinal = "";
+			if ($data['information']) {
+				$fechaFinal = strtotime($data['information'][0]['hora_final']);
+			}
 			if($fechaFinal < $fechaActual){
 				echo '<br><p><strong>Atención:</strong><br>';
 				echo 'Esta fecha se encuentra cerrada.</p>';
 			}
-			else if($data['information'][0]['estado'] == 3)
-			{
+			else if($data['information'][0]['estado'] == 3){
 				echo '<br><p><strong>Atención:</strong><br>';
 				echo 'Se completo el cupo máximo para este horario, por favor seleccione otro.</p>';
-/*			}elseif($data['information'][0]['disponible'] == 2)
-			{
-				echo '<br><p><strong>Atención:</strong><br>';
-				echo 'Esta fecha esta siendo asignada, por favor seleccione otra.</p>';
-*/
-			}elseif($data['information'][0]['numero_cupos_restantes'] <= 0){
+			} elseif ($data['information'][0]['numero_cupos_restantes'] <= 0){
 				echo '<br><p><strong>Atención:</strong><br>';
 				echo 'Se completo el cupo máximo para este horario, por favor seleccione otro.</p>';
-			}else{
+			} else {
 				//bloquear sala por 5 minutos mientras se realiza la reserva
 				$arrParam = array(
 					'idHorario' => $data['idHorario'],
 					'disponibilidad' => 2
 				);
 				$this->calendario_model->habilitarHorario($arrParam);
-
 				$this->load->view("reserva_modal", $data);
 			}
     }
