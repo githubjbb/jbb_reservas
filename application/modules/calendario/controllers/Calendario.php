@@ -95,11 +95,11 @@ class Calendario extends CI_Controller {
 				foreach ($horarioInfo as $data):
 
 					$fechaActual = strtotime(date('Y-m-d G:i:s'));
-					$fechaInicial = strtotime($data['hora_inicial']);
+					$fechaFinal = strtotime($data['hora_final']);
 					
-					if($fechaInicial < $fechaActual){
-						$color = '#f0e3e3';
-					}else{
+					if($fechaActual > $fechaFinal){
+						$color = '#f7c0c0';
+					} else {
 						switch ($data['estado']) {
 							case 1:
 								$color = '#b1eeb1';
@@ -168,6 +168,10 @@ class Calendario extends CI_Controller {
 			if($fechaFinal < $fechaActual){
 				echo '<br><p><strong>Atención:</strong><br>';
 				echo 'Esta fecha se encuentra cerrada.</p>';
+				$arrParam = array(
+					"idHorario" => $data["idHorario"]
+				);
+				$this->calendario_model->cerrarHorario($arrParam);
 			}
 			else if($data['information'][0]['estado'] == 3){
 				echo '<br><p><strong>Atención:</strong><br>';
@@ -658,10 +662,5 @@ class Calendario extends CI_Controller {
 			} else {
 			echo 'Ha ocurrido un error:'.$response["error_description"].'('.$response ["status" ]. ')'. PHP_EOL;
 			}
-			
 	}
-	
-
-	
-	
 }

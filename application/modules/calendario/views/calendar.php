@@ -14,7 +14,7 @@ $( document ).ready(function() {
 	var titulo = $('#titulo').val();
 	var mensaje = $('#mensaje').val();
 	var idHorario = $('#idHorario').val();
-    if(titulo!=''){
+    if(titulo!='' && mensaje!=''){
     	Swal.fire({
             title: titulo,
             html: mensaje,
@@ -22,11 +22,10 @@ $( document ).ready(function() {
             confirmButtonText: 'Aceptar',
             width: '400px'
         }).then(function() {
-        	var oID = idHorario;
             $.ajax ({
 		        type: 'POST',
 				url: base_url + 'calendario/cargarModalReserva',
-		        data: {'idHorario': oID},
+		        data: {'idHorario': idHorario},
 		        cache: false,
 		        success: function (data) {
 		            $('#tablaDatos').html(data);

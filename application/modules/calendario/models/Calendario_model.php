@@ -102,7 +102,7 @@
 		}
 
 		/**
-		 * Habilitar o desahilitar horaio
+		 * Habilitar o desahilitar horario
 		 * @since 13/2/2021
 		 */
 		public function habilitarHorario($arrData) 
@@ -121,7 +121,7 @@
 		}
 
 		/**
-		 * Actualizar estado de a reserva
+		 * Actualizar estado de la reserva
 		 * @since 17/2/2021
 		 */
 		public function deshabilitarReserva($arrData) 
@@ -145,13 +145,28 @@
 		 */
 		public function get_horarioDisponible() 
 		{
-				$fecha_actual = date('Y-m-d H:m:s');
+				$fecha_actual = date('Y-m-d G:i:s');
 				$this->db->select_min('id_horario');
-				$this->db->where('hora_inicial >=', $fecha_actual);
-				$this->db->where('numero_cupos_restantes >', 0);
+				$this->db->where('estado <>', 4);
 				$query = $this->db->get('horarios');
 				if ($query->num_rows() > 0) {
 					return $query->row_array();
+				} else {
+					return false;
+				}
+		}
+
+		/**
+		 * Cerrar ultimo horario disponible
+		 * @since 25/08/2023
+		 */
+		public function cerrarHorario($arrData) 
+		{				
+				$data = array('estado' => 4);
+				$this->db->where('id_horario',  $arrData['idHorario']);
+				$query = $this->db->update('horarios', $data);
+				if ($query) {
+					return true;
 				} else {
 					return false;
 				}
