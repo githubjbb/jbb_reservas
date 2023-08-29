@@ -87,13 +87,14 @@ class Settings extends CI_Controller {
 			$data["state"] = $this->input->post('state');
 			if ($idUser == '') {
 				$data["state"] = 1;//para el direccionamiento del JS, cuando es usuario nuevo no se envia state
-				$ldapuser = $this->session->userdata('logUser');
-				$ldappass = ldap_escape($this->session->userdata('password'), ".,_,-,+,*,#,$,%,&,@", LDAP_ESCAPE_FILTER);
+				
 				$ds = ldap_connect("192.168.0.44", "389") or die("No es posible conectar con el directorio activo.");  // Servidor LDAP!
 		        if (!$ds) {
 		            echo "<br /><h4>Servidor LDAP no disponible</h4>";
 		            @ldap_close($ds);
 		        } else {
+		        	$ldapuser = $this->session->userdata('logUser');
+					$ldappass = ldap_escape($this->session->userdata('password'), ".,_,-,+,*,#,$,%,&,@", LDAP_ESCAPE_FILTER);
 		            $ldapdominio = "jardin";
 		            $ldapusercn = $ldapdominio . "\\" . $ldapuser;
 		            $binddn = "dc=jardin, dc=local";
