@@ -24,7 +24,7 @@
 				$idReserva = $this->db->insert_id();
 				//actualizo la url del codigo QR
 				$path = $pass . $idReserva;
-				$rutaQRcode = "images/reservas/QR/" . $path . "_qr_code.jpg";
+				$rutaQRcode = "images/reservas/QR/" . $path . "_qr_code.png";
 				//actualizo campo con el path encriptado
 				$sql = "UPDATE reservas SET qr_code_llave = '$path', qr_code_img = '$rutaQRcode' WHERE id_reserva = $idReserva";
 				$query = $this->db->query($sql);
