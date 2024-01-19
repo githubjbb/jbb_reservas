@@ -239,7 +239,7 @@ class Calendario extends CI_Controller {
 
 							$data['idRecord'] = $llave = $pass . $idReserva;
 							$valorQRcode = base_url("calendario/registro/" . $llave);
-							$rutaImagen = "images/reservas/QR/" . $llave . "_qr_code.png";
+							$rutaImagen = "images/reservas/QR/" . $llave . "_qr_code.jpg";
 							
 							$params['data'] = $valorQRcode;
 							$params['level'] = 'H';
