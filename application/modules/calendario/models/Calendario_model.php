@@ -13,12 +13,14 @@
 				$celular = trim($this->security->xss_clean($this->input->post('celular')));
 				$contrato = trim($this->security->xss_clean($this->input->post('contrato')));
 				$dependencia = trim($this->security->xss_clean($this->input->post('idDependencia')));
+				$fecha_actual = date('Y-m-d H:i:s');
 				$data = array(
 					'fk_id_horario' => $this->input->post('hddIdHorario'),
 					'correo_electronico' => $email,
 					'numero_contacto' => $celular,
 					'numero_contrato' => $contrato,
-					'id_dependencia' => $dependencia
+					'id_dependencia' => $dependencia,
+					'fecha_creacion' => $fecha_actual
 				);
 				$query = $this->db->insert('reservas', $data);
 				$idReserva = $this->db->insert_id();
